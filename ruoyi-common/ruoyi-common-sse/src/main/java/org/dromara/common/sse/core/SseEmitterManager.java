@@ -98,6 +98,7 @@ public class SseEmitterManager {
      * @param message 要发送的消息内容
      */
     public void sendMessage(Long userId, String message) {
+        message=message.replace("欢迎登录RuoYi-Vue-Plus后台管理系统","欢迎登录本统");
         Map<String, SseEmitter> emitters = USER_TOKEN_EMITTERS.get(userId);
         if (MapUtil.isNotEmpty(emitters)) {
             for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
