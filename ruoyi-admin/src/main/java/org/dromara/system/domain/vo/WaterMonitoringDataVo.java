@@ -50,21 +50,21 @@ public class WaterMonitoringDataVo implements Serializable {
      */
     @ExcelProperty(value = "水流量", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "L=/min")
-    private Long flowRate;
+    private Double flowRate;
 
     /**
      * 水压（MPa）
      */
     @ExcelProperty(value = "水压", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "M=Pa")
-    private Long pressure;
+    private Double pressure;
 
     /**
      * 水质指数（0-100）
      */
     @ExcelProperty(value = "水质指数", converter = ExcelDictConvert.class)
     @ExcelDictFormat(readConverterExp = "0=-100")
-    private Long qualityIndex;
+    private Double qualityIndex;
 
     /**
      * 记录时间

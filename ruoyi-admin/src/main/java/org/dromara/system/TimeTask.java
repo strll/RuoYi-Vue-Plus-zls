@@ -2,6 +2,8 @@ package org.dromara.system;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.RandomUtil;
+import lombok.RequiredArgsConstructor;
+import org.anyline.annotation.Autowired;
 import org.dromara.system.domain.Sensor;
 import org.dromara.system.domain.WaterMonitoringData;
 import org.dromara.system.domain.bo.WaterMonitoringDataBo;
@@ -13,16 +15,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
+@RequiredArgsConstructor
 @Configuration
 @EnableAsync
-@Component
+@Service
+@Validated
 public class TimeTask {
 
 
@@ -41,9 +48,20 @@ public class TimeTask {
             RandomUtil.randomLong(1, 70);
     }
 
-    private WaterMonitoringDataMapper baseMapper;
-    private SensorMapper sensorMapper;
-    private IWaterMonitoringDataService iWaterMonitoringDataService;
+
+    private final WaterMonitoringDataMapper baseMapper;
+
+    private final SensorMapper sensorMapper;
+
+    private final IWaterMonitoringDataService iWaterMonitoringDataService;
+
+
+    private Double DoubleMethod(Double mydouble){
+        BigDecimal bd = new BigDecimal(String.valueOf(mydouble)); // 避免精度丢失[4,8](@ref)
+        bd = bd.setScale(2, RoundingMode.DOWN);              // 截断至后两位
+        return bd.doubleValue();
+    }
+
     @Async // 标注异步执行
     @Scheduled(cron = "0 0/5 * * * ?")
     public void asyncTask() {
@@ -58,12 +76,12 @@ public class TimeTask {
             //pressure 水压（MPa）
             SecureRandom secureRand = new SecureRandom();
             double randomValue = 0.07 + (0.2 - 0.07) * secureRand.nextDouble();
-            waterMonitoringData.setPressure(Convert.toLong(randomValue));
+            waterMonitoringData.setPressure(DoubleMethod(randomValue) );
 
             //flow_rate 水流量（L/min）
 
             double velocity = ThreadLocalRandom.current().nextDouble(0.8, 2.0);
-            waterMonitoringData.setFlowRate(Convert.toLong(velocity));
+            waterMonitoringData.setFlowRate(DoubleMethod(velocity));
             //quality_index 水质指数（0-100）
             int count70Plus = 0;
             int total = 1_000_000;
@@ -74,7 +92,7 @@ public class TimeTask {
 
             double v = count70Plus * 100.0 / total;
 
-            waterMonitoringData.setQualityIndex(Convert.toLong(v));
+            waterMonitoringData.setQualityIndex(DoubleMethod(v));
             iWaterMonitoringDataService.insertByBo(waterMonitoringData);
         });
 

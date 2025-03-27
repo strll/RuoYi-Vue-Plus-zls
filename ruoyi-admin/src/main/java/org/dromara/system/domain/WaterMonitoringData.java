@@ -39,18 +39,18 @@ public class WaterMonitoringData extends TenantEntity {
      * 水流量（L/min）
      */
     @TableField(value = "flow_rate")
-    private Long flowRate;
+    private Double flowRate;
 
     /**
      * 水压（MPa）
      */
-    private Long pressure;
+    private Double pressure;
 
     /**
      * 水质指数（0-100）
      */
     @TableField(value = "quality_index")
-    private Long qualityIndex;
+    private Double qualityIndex;
 
     /**
      * 记录时间
