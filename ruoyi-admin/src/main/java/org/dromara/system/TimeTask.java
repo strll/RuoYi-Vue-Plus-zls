@@ -83,16 +83,16 @@ public class TimeTask {
             double velocity = ThreadLocalRandom.current().nextDouble(0.8, 2.0);
             waterMonitoringData.setFlowRate(DoubleMethod(velocity));
             //quality_index 水质指数（0-100）
-            int count70Plus = 0;
-            int total = 1_000_000;
-
-            for (int i = 0; i < total; i++) {
-                if (generate() >= 70) count70Plus++;
-            }
-
-            double v = count70Plus * 100.0 / total;
-
-            waterMonitoringData.setQualityIndex(DoubleMethod(v));
+//            int count70Plus = 0;
+//            int total = 1_000_000;
+//
+//            for (int i = 0; i < total; i++) {
+//                if (generate() >= 70) count70Plus++;
+//            }
+//
+//            double v = count70Plus * 100.0 / total;
+            double randomNumber = 1 + (Math.random() * 99);
+            waterMonitoringData.setQualityIndex(randomNumber);
             iWaterMonitoringDataService.insertByBo(waterMonitoringData);
         });
 

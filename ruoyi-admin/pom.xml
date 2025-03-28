@@ -23,6 +23,12 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+<!--            <version>2.1.0</version>-->
+<!--        </dependency>-->
+
 <!--        &lt;!&ndash; mp支持的数据库均支持 只需要增加对应的jdbc依赖即可 &ndash;&gt;-->
 <!--        &lt;!&ndash; Oracle &ndash;&gt;-->
 <!--        <dependency>-->
